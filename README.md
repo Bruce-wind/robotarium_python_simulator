@@ -1,186 +1,145 @@
-Introduction
-============
+[toc]
 
-This is a Python simulator for Robotarium! The Robotarium is a project at Georgia Institute of Technology allowing public, remote access to a state-of-the-art multi-robot testbed.
+# 环境配置介绍
 
-This is an open-source, re-implementation of the [MATLAB simulator]  (https://github.com/robotarium/robotarium-matlab-simulator) in Python.
+## 安装（windows 下)
 
-## Installation
-The simulator can run on all major platforms (Windows, Linux, and macOS). All that is required is cloning the repository and installing some necessary dependencies.
+> 其他系统下的安装可以看英文版的 README.md.
 
-```
-https://github.com/robotarium/robotarium_python_simulator
-```
+依赖库：
 
-The following dependencies are required for utilization of the simulator:
-- [NumPy] (http://www.numpy.org)
-- [matplotlib] (http://matplotlib.org/index.html)
-- [CVXOPT] (http://cvxopt.org/index.html)
+- numpy
+- matplotlib
+- scipy
+- cvxopt (可选)
 
-NOTE: The SciPy stack and matplotlib can be difficult to install on Windows. However, [this] (http://www.lfd.uci.edu/~gohlke/pythonlibs/) link provides .whl files necessary for installation. Make sure to install all the dependencies for each version part of the SciPy and matplotlib stack!
+推荐使用 anaconda 创建一个python虚拟环境进行安装。在终端切换到创建的python环境中，运行下列命令安装依赖库 （也可以直接在 anaconda 图形化界面中直接搜索安装）。
 
-## Dependency Installation
+- 使用 pip 命令安装:
+    ```bash
+    pip install numpy
+    pip install matplotlib
+    pip install scipy
+    pip install cvxopt --可选
+    ```
+- 或者使用 conda 命令安装:
+    ```bash
+    conda install numpy
+    conda install matplotlib
+    conda install scipy
+    ```
 
-The guide below will show you how to install the necessary dependencies. The simulator has been thoroughly tested on Python 3.5.x+ versions.
+> 如果安装速度较慢可以尝试换清华源后进行下载。
+> [pip 换源](https://mirrors.tuna.tsinghua.edu.cn/help/pypi/): https://mirrors.tuna.tsinghua.edu.cn/help/pypi/
+> [conda 换源](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/): https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/
 
-### Linux
-To install the simulator on linux requires the installation of the dependencies labeled above. The installation varies depending on the distribution used. The easiest way to install CVXOPT is to use pip, which is typically installed with the default python installation.
+### 将仿真库安装到环境中
 
-#### Ubuntu, Debian, and other Ubuntu/Debian based distributions.
-```
-# Automatically
-Navigate to the cloned simulator directory containing the setup.py script. Then run,
-pip3 install .
-**Note the dot after install** 
+将该仓库克隆到本地后，在终端（命令行）切换到 python 虚拟环境，并进入该仓库目录（含有 setup.py ），运行 `pip install .`。
 
-# Manually
-sudo apt-get install python3-numpy python3-scipy python3-matplotlib python3-pip
-pip3 install cvxopt --user
-```
+## 测试
 
-#### Fedora, CentOS, and other RPM based distributions.
-```
-# Python 3.5.x+
-sudo yum install numpy scipy python3-matplotlib python3-pip  # For YUM package manager.
-sudo dnf install numpy scipy python3-matplotlib python3-pip  # For DNF package manager.
-pip3 install cvxopt --user
-```
+在终端进到仓库目录下，运行：
 
-#### pip
-If you are already using python with (or without) pip installed and configured, the installation can be done simply with the following commands:
-
-```
-# Python 3.5.x+
-sudo apt-get install python3-pip  # Ubuntu/Debian based
-sudo yum install python3-pip  # Fedora/CentOS based (RPM Yum based)
-sudo dnf install python3-pip  # Fedora/CentOS based (RPM dnf based)
-
-pip3 install scipy
-pip3 install numpy
-pip3 install matplotlib
-pip3 install cvxopt --user
-```
-### Windows
-Of the three installations, this one will be the most difficult due to the fact that Windows does not come with a native or easily installable package manager. To circumvent these problems, it will be necessary to install the packages using pip. The issue with using pip, however, is that NumPy, SciPy, and matplotlib require the packages to be installed without compiling. Therefore, each wheel must be installed individually. This is a simple process using pip 8.x version. The following commands are for python installations that are using PIP 8.x version. The wheel files used here can be found [here] (http://www.lfd.uci.edu/~gohlke/pythonlibs/).
-
-NOTE: The following files installed are for 64-bit architectures. If you have a 32-bit CPU, download the corresponding 32-bit and python versions of the files specified below.
-
-#### Install NumPy
-It is important to note the naming conventions and install the correct version according to your python version.
-```
-# Install NumPy (64-bit)
-pip install numpy-1.11.1+mkl-cp27-cp27m-win_amd64.whl  # Python 2.7.x Version
-pip install numpy-1.11.1+mkl-cp34-cp34m-win_amd64.whl  # Python 3.4.x Version
-pip install numpy-1.11.1+mkl-cp35-cp35m-win_amd64.whl  # Python 3.5.x Version
-
-# Install NumPy (32-bit)
-pip install numpy-1.11.1+mkl-cp27-cp27m-win32.whl  # Python 2.7.x Version
-pip install numpy-1.11.1+mkl-cp34-cp34m-win32.whl  # Python 3.4.x Version
-pip install numpy-1.11.1+mkl-cp35-cp35m-win32.whl  # Python 3.5.x Version
+```bash
+python example.py
 ```
 
-#### Install SciPy
-It is important to note the naming conventions and install the correct version according to your python version.
-```
-# Install SciPy (64-bit)
-pip install scipy-0.18.0-cp27-cp27m-win_amd64.whl  # Python 2.7.x Version
-pip install scipy-0.18.0-cp34-cp34m-win_amd64.whl  # Python 3.4.x Version
-pip install scipy-0.18.0-cp35-cp35m-win_amd64.whl  # Python 3.5.x Version
+## Examples
 
-# Install SciPy (32-bit)
-pip install scipy-0.18.0-cp27-cp27m-win32.whl  # Python 2.7.x Version
-pip install scipy-0.18.0-cp34-cp34m-win32.whl  # Python 3.4.x Version
-pip install scipy-0.18.0-cp35-cp35m-win32.whl  # Python 3.5.x Version
-```
+小车的模型为：
 
-#### Install matplotlib
-Installation of matplotlib requires extra dependencies to be installed first. Again, it is important to note the naming conventions for the matplotlib module and install the correct version according to your python version.
+$$
+\begin{equation}
+    \begin{split}
+        x_{k+1} &= x_k + \Delta t * v_k * \cos(\theta_k)\\
+        y_{k+1} &= y_k + \Delta t * v_k * \sin(\theta_k)\\
+        \theta_{k+1} &= \theta_k + \Delta t * w_k \\
+    \end{split}
+\end{equation}
+$$
 
-```
-# Install dateutil
-pip install python_dateutil-2.5.3-py2.py3-none-any.whl
+在 `example.py` 文件中的代码为
 
-# Install pytz
-pip install pytz-2016.6.1-py2.py3-none-any.whl
+```py
+import numpy as np
+from rps.utilities.controllers import create_clf_unicycle_position_controller
+import simulator
+#how to use simulator.py
+sim = simulator.Simulator(5, show_figure=True)
+controller = create_clf_unicycle_position_controller()
 
-# Install pyparsing
-pip install pyparsing-2.1.8-py2.py3-none-any.whl
+steps = 3000
+# Define goal points for controller
+goal_points = np.array(np.mat('-5 5 5 5 5; 5 -5 5 5 5; 0 0 0 0 0'))
 
-# Install cycler
-pip install cycler-0.10.0-py2.py3-none-any.whl
+for _ in range(steps):
+	poses = sim.get_poses()
 
-# Install setuptools
-pip install setuptools-25.2.0-py2.py3-none-any.whl
-
-# Install matplotlib (64-bit)
-pip install matplotlib-1.5.2-cp27-cp27m-win_amd64.whl  # Python 2.7.x Version 
-pip install matplotlib-1.5.2-cp34-cp34m-win_amd64.whl  # Python 3.4.x Version
-pip install matplotlib-1.5.2-cp35-cp35m-win_amd64.whl  # Python 3.5.x Version
-
-# Install matplotlib (32-bit)
-pip install matplotlib-1.5.2-cp27-cp27m-win32.whl  # Python 2.7.x Version 
-pip install matplotlib-1.5.2-cp34-cp34m-win32.whl  # Python 3.4.x Version
-pip install matplotlib-1.5.2-cp35-cp35m-win32.whl  # Python 3.5.x Version
+	dxu = controller(poses, goal_points[:2][:])
+	print(dxu)
+	sim.set_velocities(dxu)
+	sim.step()
 ```
 
-#### Install the Robotarium Module
-# Install RPS
-In your command terminal, navigate to the cloned python simulator repository containing setup.py. Then run,
+我们来逐行分析代码
 
-pip install .
-
-### macOS
-To install the simulator on macOS, it is recommended to install a package manager for easy installation. CVXOPT will have to be installed using PIP.
-
-#### Homebrew
-To use [Homebrew] (http://brew.sh) for dependency installation requires a bit of extra work due to the scipy stack not being a part of the main repository. You can then install the dependencies labeled above using the following work around (Requires PIP). A more detailed explanation can be found [here] (https://penandpants.com/2012/02/24/install-python/).
-
+```py
+import numpy as np
 ```
-# Install Python (Choose Python 2.7.x or 3.5.x)
-brew install python
-brew install python3
+导入进行矩阵运算的库
 
-# Restart terminal to allow the path to python to be updated.
-# make sure "which python" command returns "/usr/local/bin/python"
-
-# Install pip
-easy_install pip
-
-# Install NumPy
-pip install numpy
-
-# Install SciPy
-brew install gfortran  # Install to prevent an error inherent in SciPy.
-pip install scipy
-
-# Install matplotlib
-brew install pkg-config
-pip install matplotlib
-
-# Install CVXOPT
-pip install cvxopt --user
+```py
+from rps.utilities.controllers import create_clf_unicycle_position_controller
+import simulator
 ```
+第一行导入仿真库自带的控制器（用不上），然后导入仿真环境库。
 
-#### Macports
-To use [Macports] (https://www.macports.org/), use the following commands to install the scipy stack. At the time of writing, a Python 3.5.x version for the NumPy stack do not exist. 
+```py
+#how to use simulator.py
+sim = simulator.Simulator(5, show_figure=True)
+controller = create_clf_unicycle_position_controller()
 ```
-# For Python 2.7+
-sudo port install py27-numpy py27-scipy py27-matplotlib
+初始化仿真环境，初始化5个小车并渲染出画面（如果要强化训练的话设为 False 加快训练过程）。初始化例子的控制器。
 
-# Install pip
-easy_install pip
+> API: simulator.Simulator(number_of_robots=1, *args, **kwd)
 
-# Install CVXOPT
-pip install cvxopt --user
+```py
+steps = 3000
+# Define goal points for controller
+goal_points = np.array(np.mat('-5 5 5 5 5; 5 -5 5 5 5; 0 0 0 0 0'))
 ```
+设置实验参数，运行 3000 步。控制器参数可以不用管。
 
-## Usage
-To run one of the examples:
+```py
+poses = sim.get_poses()
+```
+获取所有小车的状态。
+> pose = [x, y, $\theta$]^T, 第 i 个小车的 pose 是 第 i 列。
 
- ```
- python "path_to_simulator"/rps/examples/plotting/barrier_certificates_with_plotting.py
- ```
+```py
+dxu = controller(poses, goal_points[:2][:])
+print(dxu)
+```
+获取控制输入 `dxu`。
+> dxu = [v, w]^T, 第 i 个小车的 dxu 是 第 i 列。
 
-## Issues
-Please enter a ticket in the [issue tracker](https://github.com/robotarium/robotarium_python_simulator/issues).
+```py
+sim.set_velocities(dxu)
+sim.step()
+```
+将控制输入量设置到环境中，并是环境向前走一步。
 
+### 实验参数
+
+| parameter | value |
+| --- | --- |
+| $\Delta$ | 0.033 sec |
+| $v_{max}$ | 0.2 m/s |
+| $v_{min}$ | -0.2 m/s |
+| $w_{max}$ | 3.63 rad / s|
+| $w_{max}$ | -3.63 rad / s|
+| $x_{max} | 10 m|
+| $x_{min} | -10 m|
+| $y_{max} | 10 m|
+| $y_{min} | -10 m|
