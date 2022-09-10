@@ -16,6 +16,7 @@ class Simulator(Robotarium):
 		self.boundary_patch.remove()
 		padding = 1 
 
+		# NOTE: boundaries = [x_min, y_min, x_max - x_min, y_max - y_min] ?
 		self.axes.set_xlim(self.boundaries[0]-padding, self.boundaries[0]+self.boundaries[2]+padding)
 		self.axes.set_ylim(self.boundaries[1]-padding, self.boundaries[1]+self.boundaries[3]+padding)
 
