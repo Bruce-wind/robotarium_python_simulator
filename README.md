@@ -134,7 +134,7 @@ sim.step()
 
 | parameter | value |
 | --- | --- |
-| $\Delta$ | 0.033 sec |
+| $\Delta t$ | 0.033 sec |
 | $v_{max}$ | 0.2 m/s |
 | $v_{min}$ | -0.2 m/s |
 | $w_{max}$ | 3.63 rad / s|
