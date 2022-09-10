@@ -139,7 +139,7 @@ sim.step()
 | $v_{min}$ | -0.2 m/s |
 | $w_{max}$ | 3.63 rad / s|
 | $w_{max}$ | -3.63 rad / s|
-| $x_{max} | 10 m|
-| $x_{min} | -10 m|
-| $y_{max} | 10 m|
-| $y_{min} | -10 m|
+| $x_{max}$ | 10 m|
+| $x_{min}$ | -10 m|
+| $y_{max}$ | 10 m|
+| $y_{min}$ | -10 m|
