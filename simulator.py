@@ -132,5 +132,5 @@ class Simulator(Robotarium):
 	def get_reward(self, state, action):
 		# add you own reward function here
 		hunter_state = self.poses[:, 1]
-		reward = np.linalg.norm(hunter_state - state)
+		reward = np.linalg.norm(hunter_state[:2] - state[:2])
 		return reward
