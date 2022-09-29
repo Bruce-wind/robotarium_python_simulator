@@ -42,10 +42,13 @@ class RobotariumABC(ABC):
         # Constants
         self.time_step = 0.033
         self.robot_diameter = 0.11
+        self.robot_diameter_hunter = 0.18
         self.wheel_radius = 0.016
         self.base_length = 0.105
         self.max_linear_velocity = 0.2
+        self.max_linear_velocity_hunter = 0.23
         self.max_angular_velocity = 2*(self.wheel_radius/self.robot_diameter)*(self.max_linear_velocity/self.wheel_radius)
+        self.max_angular_velocity_hunter = 2*(self.max_linear_velocity_hunter/self.robot_diameter_hunter)
         self.max_wheel_velocity = self.max_linear_velocity/self.wheel_radius
 
         self.robot_radius = self.robot_diameter/2
@@ -79,8 +82,12 @@ class RobotariumABC(ABC):
             self.axes.set_axis_off()
             for i in range(number_of_robots):
                 # p = patches.RegularPolygon((self.poses[:2, i]), 4, math.sqrt(2)*self.robot_radius, self.poses[2,i]+math.pi/4, facecolor='#FFD700', edgecolor = 'k')
-                p = patches.Rectangle((self.poses[:2, i]+self.robot_length/2*np.array((np.cos(self.poses[2, i]+math.pi/2), np.sin(self.poses[2, i]+math.pi/2)))+\
+                if i == 0:
+                    p = patches.Rectangle((self.poses[:2, i]+self.robot_length/2*np.array((np.cos(self.poses[2, i]+math.pi/2), np.sin(self.poses[2, i]+math.pi/2)))+\
                                                 0.04*np.array((-np.sin(self.poses[2, i]+math.pi/2), np.cos(self.poses[2, i]+math.pi/2)))), self.robot_length, self.robot_width, (self.poses[2, i] + math.pi/4) * 180/math.pi, facecolor='#FFD700', edgecolor='k')
+                else:
+                    p = patches.Rectangle((self.poses[:2, i]+self.robot_length/2*np.array((np.cos(self.poses[2, i]+math.pi/2), np.sin(self.poses[2, i]+math.pi/2)))+\
+                                                0.04*np.array((-np.sin(self.poses[2, i]+math.pi/2), np.cos(self.poses[2, i]+math.pi/2)))), self.robot_length, self.robot_width, (self.poses[2, i] + math.pi/4) * 180/math.pi, facecolor='#e32636', edgecolor='k')
 
                 rled = patches.Circle(self.poses[:2, i]+0.75*self.robot_length/2*np.array((np.cos(self.poses[2, i]), np.sin(self.poses[2, i]))+0.04*np.array((-np.sin(self.poses[2, i]+math.pi/2), np.cos(self.poses[2, i]+math.pi/2)))),
                                        self.robot_length/2/5, fill=False)
@@ -127,13 +134,29 @@ class RobotariumABC(ABC):
 
     def set_velocities(self, ids, velocities):
 
-        # Threshold linear velocities
-        idxs = np.where(np.abs(velocities[0, :]) > self.max_linear_velocity)
-        velocities[0, idxs] = self.max_linear_velocity*np.sign(velocities[0, idxs])
+        if velocities.shape[1] == 2:
+            velocities[0, 0] = velocities[0, 0] if np.abs(velocities[0,0]) < self.max_linear_velocity else  \
+                self.max_linear_velocity * np.sign(velocities[0,0])
+            velocities[1, 0] = velocities[1, 0] if np.abs(velocities[1,0]) < self.max_angular_velocity else  \
+                self.max_angular_velocity * np.sign(velocities[1,0])
+            velocities[0, 1] = velocities[0, 1] if np.abs(velocities[0,1]) < self.max_linear_velocity_hunter else  \
+                self.max_linear_velocity_hunter * np.sign(velocities[0,1])
+            velocities[1, 1] = velocities[1, 1] if np.abs(velocities[1,1]) < self.max_angular_velocity_hunter else  \
+                self.max_angular_velocity_hunter * np.sign(velocities[1,1])
 
-        # Threshold angular velocities
-        idxs = np.where(np.abs(velocities[1, :]) > self.max_angular_velocity)
-        velocities[1, idxs] = self.max_angular_velocity*np.sign(velocities[1, idxs])
+            # print(f"velocity: {velocities}")
+            # print(f"max of hunter: {self.max_linear_velocity_hunter}, {self.max_angular_velocity_hunter}")
+            # print(f"max of hunter: {self.max_linear_velocity}, {self.max_angular_velocity}")
+        else:
+            # Threshold linear velocities
+            idxs = np.where(np.abs(velocities[0, :]) > self.max_linear_velocity)
+            velocities[0, idxs] = self.max_linear_velocity*np.sign(velocities[0, idxs])
+
+            # Threshold angular velocities
+            idxs = np.where(np.abs(velocities[1, :]) > self.max_angular_velocity)
+            velocities[1, idxs] = self.max_angular_velocity*np.sign(velocities[1, idxs])
+
+
         self.velocities = velocities
 
     @abstractmethod
