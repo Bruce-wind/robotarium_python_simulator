@@ -74,12 +74,17 @@ controller = create_clf_unicycle_position_controller()
 steps = 3000
 # Define goal points
 goal_points = np.array(np.mat('-2.5; -2.5'))
+# goal_points = np.array(np.mat('4;4'))
 
 poses, pose_of_hunter = sim.reset(np.array([[2],[2],[0]]))
+reward = 0
 for _ in range(steps):
-	print(f"poses: {poses}")
+	print(f"poses: {poses}, reward: {reward}")
 	dxu = controller(poses.reshape(-1,1), goal_points)
-	poses, pose_of_hunter, reward = sim.step(dxu)
+	poses, pose_of_hunter, reward, terminal = sim.step(dxu)
+
+	if terminal:
+		break
 ```
 
 我们来逐行分析代码
