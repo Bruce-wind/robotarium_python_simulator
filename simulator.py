@@ -99,6 +99,13 @@ class Simulator(Robotarium):
 				if dist < self.radius+ padding:
 					tempA = tempA / dist * (self.radius + padding)
 					self.poses[:2, robot] = tempA + np.array(barrier)
+		
+		# collision with prey
+		tempB = self.poses[:2, 1] - self.poses[:2,0]
+		dist_temp = np.linalg.norm(tempB)
+		if dist_temp < self.radius:
+			tempB = tempB / dist_temp * (self.radius)
+			self.poses[:2, 1] = tempB + np.array(self.poses[:2,0])
 
 		# compute the reward
 		reward = self.get_reward(poses[:, 0], action)
