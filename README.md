@@ -151,7 +151,8 @@ for _ in range(steps):
 | $y_{min}$ | -3 m|
 | $\theta_{max}$ | $\infin$ rad |
 | $\theta_{min}$ | $-\infin$ rad|
-| radius of barriers | 0.2 m |
-| position of barriers | (-1, 1), (1, 1), (0, -1) unit: m|
-| center of goal area | (-2.5, -2.5) unit: m|
-| radius of goal area | 0.2 m |
+| 障碍物半径 | 0.2 m |
+| 障碍物中心 | (-1, 1), (1, 1), (0, -1) unit: m|
+| 目标中心 | (-2.5, -2.5) unit: m|
+| 目标半径 | 0.2 m |
+| 小车碰撞半径 | 0.1 m|
