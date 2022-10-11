@@ -77,6 +77,7 @@ class Simulator(Robotarium):
 		poses = self.get_poses()
 		dxu_hunter = self.hunter_policy(poses[:, 1].reshape(-1,1), poses[:2, 0].reshape(-1,1))
 		dxu = np.concatenate([action.reshape(-1,1), dxu_hunter], axis=1)
+		terminal = 0
 
 		# make a step
 		self.set_velocities(dxu)
@@ -107,10 +108,16 @@ class Simulator(Robotarium):
 			tempB = tempB / dist_temp * (self.radius)
 			self.poses[:2, 1] = tempB + np.array(self.poses[:2,0])
 
+		# whether reach goal area
+		tempC = self.poses[:2, 0] - np.array([-2.5, -2.5])
+		dist_C = np.linalg.norm(tempC)
+		if dist_C < 0.2:
+			terminal = 1
+
 		# compute the reward
 		reward = self.get_reward(poses[:, 0], action)
 
-		return self.poses[:, 0], self.poses[:, 1], reward
+		return self.poses[:, 0], self.poses[:, 1], reward, terminal
 
 	def reset(self, initial_conditions):
 		assert initial_conditions.shape[1] > 0, "the initial conditions must not be empty"
