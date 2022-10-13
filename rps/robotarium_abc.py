@@ -127,6 +127,7 @@ class RobotariumABC(ABC):
             self.axes.set_xlim(self.boundaries[0]-0.1, self.boundaries[0]+self.boundaries[2]+0.1)
             self.axes.set_ylim(self.boundaries[1]-0.1, self.boundaries[1]+self.boundaries[3]+0.1)
 
+            plt.axis("equal")
             plt.ion()
             plt.show()
 
