@@ -81,9 +81,9 @@ reward = 0
 for _ in range(steps):
 	print(f"poses: {poses}, reward: {reward}")
 	dxu = controller(poses.reshape(-1,1), goal_points)
-	poses, pose_of_hunter, reward, terminal = sim.step(dxu)
+	poses, pose_of_hunter, reward, terminate = sim.step(dxu)
 
-	if terminal:
+	if terminate:
 		break
 ```
 
@@ -131,12 +131,12 @@ poses, pose_of_hunter = sim.reset(np.array([[2],[2],[0]]))
 for _ in range(steps):
     print(f"poses: {poses}")
     dxu = controller(poses.reshape(-1,1), goal_points)
-    poses, pose_of_hunter, reward, terminal = sim.step(dxu)
+    poses, pose_of_hunter, reward, terminate = sim.step(dxu)
 
-    if terminal:
+    if terminate:
         break
 ```
-获取控制输入 `dxu`, 并输入到环境中，使环境时间向前走一步, 获得当前状态下$x_t$采取动作$u_t$的奖励$R(x_t, u_t)$, 并得到下一时刻的小车和追击者的状态。如果到达目标点 terminal 会被设为1.
+获取控制输入 `dxu`, 并输入到环境中，使环境时间向前走一步, 获得当前状态下$x_t$采取动作$u_t$的奖励$R(x_t, u_t)$, 并得到下一时刻的小车和追击者的状态。如果到达目标点 terminate 会被设为1.
 > dxu = [v, w] 
 > 奖励函数需要自己定义，可以将奖励函数写在 `simulator.py` 文件中的 `get_reward` 函数中，也可以自己在循环中添加奖励函数。
 
