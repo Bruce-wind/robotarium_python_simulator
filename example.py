@@ -17,7 +17,7 @@ reward = 0
 for _ in range(steps):
 	print(f"poses: {poses}, reward: {reward}")
 	dxu = controller(poses.reshape(-1,1), goal_points)
-	poses, pose_of_hunter, reward, terminal = sim.step(dxu)
+	poses, pose_of_hunter, reward, terminate = sim.step(dxu)
 
-	if terminal:
+	if terminate:
 		break
