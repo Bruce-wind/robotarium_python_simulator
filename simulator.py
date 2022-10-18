@@ -2,7 +2,6 @@ import numpy as np
 from matplotlib import patches
 
 from rps.robotarium import Robotarium
-from rps.utilities import barrier_certificates
 
 class Simulator(Robotarium):
 	""" HITSZ ML Lab simulator """
