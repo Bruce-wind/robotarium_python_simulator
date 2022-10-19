@@ -81,6 +81,7 @@ for i in range(3):
         action = agent.act(state)
         env.render()
         state, reward, done, _ = env.step(action)
+        print(f"state: {state}, \n action: {action}, reward: {reward}")
         if done:
             break
 env.close()
