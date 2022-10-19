@@ -16,8 +16,8 @@ poses, pose_of_hunter = sim.reset(np.array([[2],[2],[0]]))
 reward = 0
 for _ in range(steps):
 	print(f"poses: {poses}, reward: {reward}")
-	dxu = controller(poses.reshape(-1,1), goal_points)
-	poses, pose_of_hunter, reward, terminate = sim.step(dxu)
+	action = controller(poses.reshape(-1,1), goal_points)
+	poses, pose_of_hunter, reward, terminate = sim.step(action)
 
 	if terminate:
 		break
