@@ -39,9 +39,9 @@ def get_action(index) -> np.ndarray:
         print(f"WARN: invalid index {index}")
         return np.array([0., 0.])
 
-def dqn(n_episodes=2000, max_t=3000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
+def dqn(n_episodes=100000, max_t=3000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
     """Deep Q-Learning.
-   
+  
     Params
     ======
         n_episodes (int): maximum number of training episodes
@@ -88,13 +88,17 @@ plt.xlabel('Episode #')
 plt.show()
 
 # load the weights from file
-# agent.qnetwork_local.load_state_dict(torch.load('checkpoint.pth'))
+# env = simulator.Simulator(2, show_figure=True)
+# agent.qnetwork_local.load_state_dict(torch.load('model\\checkpoint.pth'))
 # for i in range(3):
-#     state = env.reset()
-#     for j in range(200):
+#     poses, pose_of_hunter = env.reset(np.array([[2],[2],[0]]))
+#     state = np.concatenate((poses, pose_of_hunter))
+#     for t in range(3000):
 #         action = agent.act(state)
-#         env.render()
-#         state, reward, done, _ = env.step(action)
+#         real_action = get_action(action) # transform the action to real action
+#         poses, pose_of_hunter, reward, done= env.step(real_action)
+#         next_state = np.concatenate((poses, pose_of_hunter)) # concatenate the environment state
+#         agent.step(state, action, reward, next_state, done)
+#         state = next_state
 #         if done:
 #             break
-# env.close()
