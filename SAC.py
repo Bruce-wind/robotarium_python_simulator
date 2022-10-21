@@ -3,18 +3,12 @@ curr_path = os.path.dirname(__file__)
 parent_path = os.path.dirname(curr_path)
 sys.path.append(parent_path)  # add current terminal path to sys.path
 
-
-import gym
 import torch
 import datetime
 
-from SAC.env import NormalizedActions
 from SAC.agent import SAC
 import simulator
-import random
-import matplotlib.pyplot as plt
 import numpy as np
-import time
 
 curr_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S") # obtain current time
 
@@ -144,6 +138,6 @@ if __name__ == "__main__":
 
     # eval
     env,agent = env_agent_config(cfg,seed=1)
-    agent.load(path='backup/'+cfg.model_path )
-    # agent.load(path=cfg.model_path)
+    # agent.load(path='backup/'+cfg.model_path )
+    agent.load(path=cfg.model_path)
     rewards, ma_rewards = eval(cfg, env, agent)
