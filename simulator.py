@@ -8,6 +8,7 @@ class Simulator(Robotarium):
     def __init__(self, number_of_robots=1, *args, **kwd):
         super(Simulator, self).__init__(number_of_robots=number_of_robots, *args, **kwd)
         self.init_environment()
+        self.last_dist = 0
 
     def init_environment(self):
         # reset boundaries
@@ -106,16 +107,15 @@ class Simulator(Robotarium):
         if dist_temp < self.radius:
             tempB = tempB / dist_temp * (self.radius)
             self.poses[:2, 1] = tempB + np.array(self.poses[:2,0])
-            terminate = 1
 
         # whether reach goal area
-        tempC = self.poses[:2, 0] - np.array([-2.5, -2.5])
-        dist_C = np.linalg.norm(tempC)
-        if dist_C < 0.2:
-            terminate = 1
+        # tempC = self.poses[:2, 0] - np.array([-2.5, -2.5])
+        # dist_C = np.linalg.norm(tempC)
+        # if dist_C < 0.2:
+        #     terminate = 1
 
         # compute the reward
-        reward = self.get_reward(poses[:, 0], action)
+        reward, terminate= self.get_reward(poses[:, 0], action)
 
         return self.poses[:, 0], self.poses[:, 1], reward, terminate
 
@@ -145,23 +145,30 @@ class Simulator(Robotarium):
     ############### Add Your Code Here ##############################
     def get_reward(self, state, action):
         # add you own reward function here
+        # reward = -10
+        terminate = 0
+        dist_C = np.linalg.norm( state[:2] - np.array([-2.5, -2.5]))
+        reward = 1 if dist_C - self.last_dist < 0 else -1
 
-        reward = -1
+        self.last_dist = dist_C
+
+        if dist_C < 0.2:
+            print("reach goal")
+            reward += 500
+            terminate = 1
+
         # collision with barriers
         padding = 0.1
         for barrier in self.barrier_centers:
             dist = np.linalg.norm(state[:2] - np.array(barrier))
             if dist < self.radius+ padding:
                 reward -= 100
+                terminate = 1
 
         hunter_state = self.poses[:, 1]
-        if np.linalg.norm(hunter_state[:2] - state[:2]) < 0.1:
-            reward -= 200
+        if np.linalg.norm(hunter_state[:2] - state[:2]) < self.radius:
+            reward -= 500
+            terminate = 1
 
-        dist_C = np.linalg.norm( state[:2] - np.array([-2.5, -2.5]))
-        reward += 0.2/dist_C
 
-        if dist_C < 0.2:
-            reward += 500
-
-        return reward
+        return reward, terminate
